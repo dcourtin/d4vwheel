@@ -5,6 +5,14 @@ Une place peut être un dossier, qui ouvre un second anneau ; un dossier peut en
 qui ouvre un troisième anneau. Fond flouté comme le Dock. Appli de barre des menus (sans Dock),
 macOS 14 ou plus. Portage macOS de la « Roue d'odysseus » ([spécification](docs/specification.md)).
 
+<p align="center">
+  <img src="docs/images/roue.png" width="440" alt="La roue, un dossier survolé ouvre son anneau">
+  <img src="docs/images/roue-dossier.png" width="440" alt="Un dossier dans un dossier : trois anneaux">
+</p>
+<p align="center">
+  <img src="docs/images/reglages.png" width="640" alt="La fenêtre Réglages : la roue, la place choisie, le fond, les déclencheurs">
+</p>
+
 ## Installer
 
 Télécharger `d4vWheel-<version>.dmg`, glisser d4vWheel dans Applications, l'ouvrir. Elle vit dans la barre des menus.
