@@ -95,6 +95,6 @@ Une appli peut **proposer** une entrée ; elle n'entre jamais seule dans la roue
 - **Fenêtre** : `NSPanel` sans bordure, non activante, transparente, plein écran sur l'écran du pointeur, niveau au-dessus des fenêtres (`.popUpMenu` ou `.screenSaver`), `canJoinAllSpaces` ; dessin SwiftUI ou Core Animation. Position du pointeur : `NSEvent.mouseLocation` (origine en bas à gauche).
 - **Applications** : `NSWorkspace` / Launch Services pour la liste et les icônes (`NSWorkspace.shared.icon(forFile:)`, à charger à la taille exacte pour la netteté) ; « déjà ouverte » : `NSRunningApplication`, ramener par `activate()` ; passer d'une fenêtre à l'autre demande l'API d'accessibilité (`AXUIElement`).
 - **Actions d'applications** : pas d'équivalent direct des `[Desktop Action]` ; candidats : raccourcis Shortcuts (`shortcuts run`), schémas d'URL, AppleScript, éléments du menu du Dock.
-- **Propositions des applis** : un dossier `~/Library/Application Support/Roue/propositions/` (fichiers JSON), ou un schéma d'URL `roue://proposer?…`, ou un outil en ligne de commande.
-- **Configuration** : le même format texte se garde tel quel (`~/Library/Application Support/Roue/roue` ou `~/.config/roue`) ; la fiche Réglages devient une fenêtre de préférences.
+- **Propositions des applis** : un dossier `~/Library/Application Support/d4vWheel/propositions/` (fichiers JSON), ou un schéma d'URL `d4vwheel://proposer?…`, ou un outil en ligne de commande.
+- **Configuration** : le même format texte se garde tel quel (`~/Library/Application Support/d4vWheel/wheel` ou `~/.config/d4vwheel/wheel`) ; la fiche Réglages devient une fenêtre de préférences.
 - **Clavier** : la rangée des chiffres par code physique (`kVK_ANSI_1`…) pour rester juste en AZERTY.

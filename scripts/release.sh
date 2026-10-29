@@ -1,18 +1,18 @@
 #!/bin/zsh
-# Construit, signe, notarise et emballe Roue pour la distribution.
+# Construit, signe, notarise et emballe d4vWheel pour la distribution.
 #   CODESIGN_IDENTITY="Developer ID Application: Nom (ÉQUIPE)"   obligatoire pour distribuer
-#   NOTARY_PROFILE=roue   profil créé par : xcrun notarytool store-credentials roue --apple-id … --team-id … --password …
-# Résultat : dist/Roue-<version>.zip et dist/Roue-<version>.dmg
+#   NOTARY_PROFILE=d4vwheel   profil créé par : xcrun notarytool store-credentials d4vwheel --apple-id … --team-id … --password …
+# Résultat : dist/d4vWheel-<version>.zip et dist/d4vWheel-<version>.dmg
 set -euo pipefail
 cd "$(dirname "$0")/.."
 : "${CODESIGN_IDENTITY:?Définissez CODESIGN_IDENTITY (certificat Developer ID Application)}"
 
 scripts/build-app.sh release
-APP="build/Roue.app"
+APP="build/d4vWheel.app"
 VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
 mkdir -p dist
-ZIP="dist/Roue-$VERSION.zip"
-DMG="dist/Roue-$VERSION.dmg"
+ZIP="dist/d4vWheel-$VERSION.zip"
+DMG="dist/d4vWheel-$VERSION.dmg"
 rm -f "$ZIP" "$DMG"
 
 codesign --verify --deep --strict --verbose=2 "$APP"
@@ -30,7 +30,7 @@ fi
 STAGE="$(mktemp -d)"
 cp -R "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "Roue" -srcfolder "$STAGE" -ov -format UDZO "$DMG" >/dev/null
+hdiutil create -volname "d4vWheel" -srcfolder "$STAGE" -ov -format UDZO "$DMG" >/dev/null
 rm -rf "$STAGE"
 if [[ -n "${NOTARY_PROFILE:-}" ]]; then
   codesign --force --timestamp --sign "$CODESIGN_IDENTITY" "$DMG"

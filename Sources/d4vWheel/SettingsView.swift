@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Réglages > Roue : la roue telle qu'elle s'ouvre, la fiche de la place choisie, et ce qu'on peut y mettre.
+/// Réglages > d4vWheel : la roue telle qu'elle s'ouvre, la fiche de la place choisie, et ce qu'on peut y mettre.
 struct SettingsView: View {
     @ObservedObject var model: SettingsModel
 
@@ -152,7 +152,7 @@ struct TriggersSheet: View {
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text("Système").font(.headline)
-                Toggle("Ouvrir Roue à l'ouverture de session", isOn: $model.launchAtLogin)
+                Toggle("Ouvrir d4vWheel à l'ouverture de session", isOn: $model.launchAtLogin)
                 if let e = model.loginItemError {
                     Text(e).font(.caption).foregroundStyle(.secondary)
                 }

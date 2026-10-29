@@ -134,7 +134,7 @@ enum Launcher {
             let config = NSWorkspace.OpenConfiguration()
             config.activates = true
             NSWorkspace.shared.openApplication(at: url, configuration: config) { _, error in
-                if let error { NSLog("Roue : impossible de lancer \(url.lastPathComponent) : \(error.localizedDescription)") }
+                if let error { NSLog("d4vWheel : impossible de lancer \(url.lastPathComponent) : \(error.localizedDescription)") }
             }
         case .url(let s):
             if let u = URL(string: s) { NSWorkspace.shared.open(u) }
@@ -163,6 +163,6 @@ enum Launcher {
         let p = Process()
         p.executableURL = URL(fileURLWithPath: path)
         p.arguments = args
-        do { try p.run() } catch { NSLog("Roue : échec de \(path) \(args) : \(error)") }
+        do { try p.run() } catch { NSLog("d4vWheel : échec de \(path) \(args) : \(error)") }
     }
 }

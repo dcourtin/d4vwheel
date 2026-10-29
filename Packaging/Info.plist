@@ -5,17 +5,17 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>fr</string>
     <key>CFBundleExecutable</key>
-    <string>Roue</string>
+    <string>d4vWheel</string>
     <key>CFBundleIconFile</key>
-    <string>Roue</string>
+    <string>d4vWheel</string>
     <key>CFBundleIdentifier</key>
-    <string>fr.odysseus.roue</string>
+    <string>fr.d4v.wheel</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>Roue</string>
+    <string>d4vWheel</string>
     <key>CFBundleDisplayName</key>
-    <string>Roue</string>
+    <string>d4vWheel</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -26,10 +26,10 @@
     <array>
         <dict>
             <key>CFBundleURLName</key>
-            <string>fr.odysseus.roue</string>
+            <string>fr.d4v.wheel</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>roue</string>
+                <string>d4vwheel</string>
             </array>
         </dict>
     </array>
@@ -40,10 +40,10 @@
     <key>LSUIElement</key>
     <true/>
     <key>NSAppleEventsUsageDescription</key>
-    <string>Roue pilote d'autres applications pour lancer leurs actions (nouvelle note, nouveau message…).</string>
+    <string>d4vWheel pilote d'autres applications pour lancer leurs actions (nouvelle note, nouveau message…).</string>
     <key>NSHighResolutionCapable</key>
     <true/>
     <key>NSHumanReadableCopyright</key>
-    <string>© 2026 Odysseus</string>
+    <string>© 2026 David Courtin</string>
 </dict>
 </plist>

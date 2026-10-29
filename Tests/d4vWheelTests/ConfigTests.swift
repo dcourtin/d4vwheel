@@ -1,5 +1,5 @@
 import Testing
-@testable import Roue
+@testable import d4vWheel
 
 @Suite struct ConfigTests {
     @Test func parseTypesAndPadding() {

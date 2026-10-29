@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "Roue",
+    name: "d4vWheel",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "Roue",
-            path: "Sources/Roue"
+            name: "d4vWheel",
+            path: "Sources/d4vWheel"
         ),
         .testTarget(
-            name: "RoueTests",
-            dependencies: ["Roue"],
-            path: "Tests/RoueTests"
+            name: "d4vWheelTests",
+            dependencies: ["d4vWheel"],
+            path: "Tests/d4vWheelTests"
         ),
     ]
 )

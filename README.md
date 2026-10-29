@@ -1,4 +1,4 @@
-# Roue — lanceur circulaire pour macOS
+# d4vWheel — lanceur circulaire pour macOS
 
 Huit raccourcis en cercle autour du pointeur, à portée de geste, sans aller jusqu'au Dock.
 Une place peut être un dossier, qui ouvre un second anneau ; un dossier peut en contenir un autre,
@@ -7,7 +7,7 @@ macOS 14 ou plus. Portage macOS de la « Roue d'odysseus » ([spécification](do
 
 ## Installer
 
-Télécharger `Roue-<version>.dmg`, glisser Roue dans Applications, l'ouvrir. Elle vit dans la barre des menus.
+Télécharger `d4vWheel-<version>.dmg`, glisser d4vWheel dans Applications, l'ouvrir. Elle vit dans la barre des menus.
 
 Autorisations, demandées à la première utilisation :
 
@@ -26,6 +26,8 @@ Autorisations, demandées à la première utilisation :
 ## Clavier et souris
 
 - 1–8 (touches physiques, juste en AZERTY) ou pavé numérique : choisit la place ; dans un anneau ouvert, sa place.
+- Molette ou défilement (vers le bas : sens horaire) : parcourt les places sans bouger la souris ;
+  relâcher le clic du milieu resté au centre choisit la place ainsi atteinte.
 - Flèches, Tab / Maj+Tab : parcourent ; Entrée / Espace : choisit ; Échap et Retour arrière : replient l'anneau
   le plus profond, sinon Échap ferme la roue.
 - Survol d'un dossier : ouvre son anneau ; survol d'une autre place : le referme.
@@ -33,7 +35,7 @@ Autorisations, demandées à la première utilisation :
 
 ## Réglages
 
-Menu de la barre des menus > « Réglages… » (ou une place vide de la roue, ou `roue://reglages`).
+Menu de la barre des menus > « Réglages… » (ou une place vide de la roue, ou `d4vwheel://reglages`).
 
 - **La roue** telle qu'elle s'ouvre, avec le vrai flou : un clic choisit une place.
 - **La fiche** : déplacer, retirer, en faire un dossier (nommé aussitôt au clavier), ouvrir ou renommer un dossier.
@@ -50,7 +52,8 @@ Le réglage d'accessibilité « Réduire les animations » du système est respe
 
 ## Fichier de configuration
 
-`~/Library/Application Support/Roue/roue` (ou `~/.config/roue/roue`), relu à chaque ouverture.
+`~/Library/Application Support/d4vWheel/wheel` (ou `~/.config/d4vwheel/wheel`), relu à chaque ouverture.
+Les emplacements d'avant le renommage (`Application Support/Roue/roue`, `~/.config/roue/roue`) restent lus.
 Sans fichier : les favoris du Dock.
 
 ```
@@ -75,13 +78,13 @@ Une place par ligne, depuis le haut, dans le sens horaire ; les places d'un doss
 
 Une appli peut **proposer** une entrée ; elle n'entre jamais seule dans la roue, l'utilisateur la place dans Réglages.
 
-- Déposer un fichier `ID.json` dans `~/Library/Application Support/Roue/propositions/` :
+- Déposer un fichier `ID.json` dans `~/Library/Application Support/d4vWheel/propositions/` :
   `{"nom": "…", "commande": "…", "icone": "chemin ou symbole SF", "description": "…"}`.
-- Ou par le schéma d'URL : `roue://proposer?id=ID&nom=NOM&commande=CMD[&icone=I&description=D]`
-  (Roue demande confirmation), `roue://retirer?id=ID`, `roue://ouvrir`, `roue://reglages`.
-- Ou en ligne de commande (`/Applications/Roue.app/Contents/MacOS/Roue`) :
-  `Roue proposer --id ID --nom NOM --commande CMD [--icone I] [--description D]`, `Roue retirer ID`,
-  `Roue liste`, `Roue ouvrir`, `Roue reglages`.
+- Ou par le schéma d'URL : `d4vwheel://proposer?id=ID&nom=NOM&commande=CMD[&icone=I&description=D]`
+  (d4vWheel demande confirmation), `d4vwheel://retirer?id=ID`, `d4vwheel://ouvrir`, `d4vwheel://reglages`.
+- Ou en ligne de commande (`/Applications/d4vWheel.app/Contents/MacOS/d4vWheel`) :
+  `d4vWheel proposer --id ID --nom NOM --commande CMD [--icone I] [--description D]`, `d4vWheel retirer ID`,
+  `d4vWheel liste`, `d4vWheel ouvrir`, `d4vWheel reglages`.
 - Identifiant : lettres, chiffres, `.`, `-`, `_` (100 caractères au plus).
 
 ## Construire
@@ -89,27 +92,27 @@ Une appli peut **proposer** une entrée ; elle n'entre jamais seule dans la roue
 Les Command Line Tools suffisent, sans Xcode.
 
 ```bash
-swift run Roue            # lancement rapide, sans bundle
-scripts/build-app.sh      # build/Roue.app (signature ad hoc)
+swift run d4vWheel            # lancement rapide, sans bundle
+scripts/build-app.sh      # build/d4vWheel.app (signature ad hoc)
 scripts/test.sh           # tests
 ```
 
-Aides : `swift run Roue --rendu /tmp/roue.png --dossier` dessine la roue dans une image ;
-`swift run Roue --rendu-reglages /tmp/reglages.png` la fenêtre Réglages ; `kill -USR1 <pid>` bascule la roue.
+Aides : `swift run d4vWheel --rendu /tmp/d4vwheel.png --dossier` dessine la roue dans une image ;
+`swift run d4vWheel --rendu-reglages /tmp/reglages.png` la fenêtre Réglages ; `kill -USR1 <pid>` bascule la roue.
 
 ## Distribuer
 
 Il faut un certificat **Developer ID Application** (compte développeur Apple) et un profil de notarisation :
 
 ```bash
-xcrun notarytool store-credentials roue --apple-id vous@exemple.fr --team-id ÉQUIPE --password mot-de-passe-d-app
+xcrun notarytool store-credentials d4vwheel --apple-id vous@exemple.fr --team-id ÉQUIPE --password mot-de-passe-d-app
 ```
 
 ```bash
-CODESIGN_IDENTITY="Developer ID Application: Votre Nom (ÉQUIPE)" NOTARY_PROFILE=roue scripts/release.sh
+CODESIGN_IDENTITY="Developer ID Application: Votre Nom (ÉQUIPE)" NOTARY_PROFILE=d4vwheel scripts/release.sh
 ```
 
 Le script construit, signe avec le runtime durci et les entitlements, notarise, agrafe, puis écrit
-`dist/Roue-<version>.zip` et `dist/Roue-<version>.dmg`. La version se change dans `Packaging/Info.plist`.
+`dist/d4vWheel-<version>.zip` et `dist/d4vWheel-<version>.dmg`. La version se change dans `Packaging/Info.plist`.
 Une signature stable est nécessaire pour que l'autorisation Accessibilité survive aux mises à jour ; une
 signature ad hoc change à chaque build et la fait perdre.

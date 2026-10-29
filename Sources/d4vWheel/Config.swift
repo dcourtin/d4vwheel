@@ -140,7 +140,7 @@ struct WheelConfig: Equatable {
 
     func serialize() -> String {
         var lines: [String] = [
-            "# Roue — une place par ligne, depuis le haut, dans le sens horaire.",
+            "# d4vWheel — une place par ligne, depuis le haut, dans le sens horaire.",
             "# app:ID (bundle, nom ou chemin) · action:ID:CLÉ · entree:ID · url:… · sh:… · raccourci:NOM",
             "# dossier:NOM (ses places suivent, en retrait) · - (vide)",
             "",
@@ -162,18 +162,31 @@ struct WheelConfig: Equatable {
 enum ConfigStore {
     enum Source { case file(URL), dock, fallback }
 
-    static var preferredURL: URL {
-        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return support.appendingPathComponent("Roue/roue")
+    private static var support: URL {
+        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+    }
+    private static var home: URL { FileManager.default.homeDirectoryForCurrentUser }
+
+    /// Le dossier de l'appli dans Application Support : `d4vWheel`, ou `Roue` (ancien nom) s'il existe encore seul.
+    static var supportDirectory: URL {
+        let current = support.appendingPathComponent("d4vWheel")
+        let legacy = support.appendingPathComponent("Roue")
+        if !FileManager.default.fileExists(atPath: current.path), FileManager.default.fileExists(atPath: legacy.path) { return legacy }
+        return current
     }
 
-    static var legacyURL: URL {
-        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".config/roue/roue")
+    static var preferredURL: URL { support.appendingPathComponent("d4vWheel/wheel") }
+
+    /// Emplacements plus anciens, encore lus : `~/.config/d4vwheel/wheel`, et ceux d'avant le renommage (Roue).
+    static var legacyURLs: [URL] {
+        [home.appendingPathComponent(".config/d4vwheel/wheel"),
+         support.appendingPathComponent("Roue/roue"),
+         home.appendingPathComponent(".config/roue/roue")]
     }
 
     /// Le premier fichier existant, sinon l'emplacement préféré.
     static var fileURL: URL {
-        for url in [preferredURL, legacyURL] where FileManager.default.fileExists(atPath: url.path) { return url }
+        for url in [preferredURL] + legacyURLs where FileManager.default.fileExists(atPath: url.path) { return url }
         return preferredURL
     }
 

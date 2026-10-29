@@ -116,7 +116,7 @@ enum ActionCatalog {
     static func run(_ action: AppAction) {
         switch action.kind {
         case .appleScript(let source):
-            // osascript plutôt que NSAppleScript : ne bloque pas l'interface ; l'autorisation Automation est demandée à Roue.
+            // osascript plutôt que NSAppleScript : ne bloque pas l'interface ; l'autorisation Automation est demandée à d4vWheel.
             Launcher.run("/usr/bin/osascript", ["-e", source])
         case .url(let s):
             if let u = URL(string: s) { NSWorkspace.shared.open(u) }

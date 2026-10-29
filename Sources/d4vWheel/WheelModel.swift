@@ -109,6 +109,7 @@ final class WheelModel: ObservableObject {
         previousLabel = ""
         labelChangedAt = -10
         pointerLeftCenter = false
+        scrollAccumulated = 0
         wake()
     }
 
@@ -238,11 +239,35 @@ final class WheelModel: ObservableObject {
         }
     }
 
-    /// Clic du milieu maintenu puis relâché : choisit la place sous le pointeur.
+    /// Clic du milieu maintenu puis relâché : choisit la place sous le pointeur,
+    /// ou, si le pointeur est resté au centre, la place choisie à la molette ou au clavier.
     func middleReleased(at p: CGPoint) {
-        guard acceptsInput, pointerLeftCenter, let t = hitTest(p), t != .center else { return }
+        guard acceptsInput else { return }
+        let t: Target?
+        if pointerLeftCenter { t = hitTest(p) } else if case .item? = hovered { t = hovered } else { t = nil }
+        guard let t, t != .center else { return }
         if let place = item(t), place.kind == .folder { return } // le laisse ouvert
         choose(t)
+    }
+
+    // MARK: - Molette
+
+    /// Défilement cumulé depuis le dernier cran (points, défilement fin seulement).
+    private var scrollAccumulated: CGFloat = 0
+    /// Points de défilement fin (trackpad) pour passer d'une place à la suivante.
+    static let scrollStep: CGFloat = 24
+
+    /// La molette parcourt les places du niveau actif, comme Tab : vers le bas, dans le sens horaire.
+    /// `precise` : défilement en points (trackpad, souris Magic) à cumuler ; sinon un cran = une place.
+    func scroll(deltaY: CGFloat, precise: Bool) {
+        guard acceptsInput, deltaY != 0 else { return }
+        guard precise else { move(deltaY < 0 ? 1 : -1); return }
+        if (scrollAccumulated < 0) != (deltaY < 0) { scrollAccumulated = 0 } // changement de sens : on repart
+        scrollAccumulated += deltaY
+        let steps = Int(scrollAccumulated / Self.scrollStep)
+        guard steps != 0 else { return }
+        scrollAccumulated -= CGFloat(steps) * Self.scrollStep
+        move(-steps)
     }
 
     /// Rayon courant d'un anneau : se déploie du bord du niveau précédent à son bord final.

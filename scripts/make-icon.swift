@@ -1,4 +1,4 @@
-// Dessine l'icône de Roue (une roue de huit places) et écrit un .iconset ; iconutil en fait le .icns.
+// Dessine l'icône de d4vWheel (une roue de huit places) et écrit un .iconset ; iconutil en fait le .icns.
 import AppKit
 
 let out = URL(fileURLWithPath: CommandLine.arguments[1])

@@ -1,6 +1,6 @@
 import AppKit
 import Testing
-@testable import Roue
+@testable import d4vWheel
 
 @MainActor
 @Suite struct WheelModelTests {
@@ -88,6 +88,46 @@ import Testing
         m.choose(.item(level: 1, index: 0))
         #expect(reported?.0 == [5])
         #expect(reported?.1 == 0)
+    }
+
+    @Test func scrollWalksPlacesAndMiddleReleaseAtCenterChooses() {
+        let m = makeModel()
+        var launched: [String] = []
+        m.onLaunch = { launched.append($0.name) }
+        // Un cran de souris vers le bas : la première place ; un deuxième : la suivante (sens horaire).
+        m.scroll(deltaY: -1, precise: false)
+        #expect(m.hovered == .item(level: 0, index: 0))
+        m.scroll(deltaY: -1, precise: false)
+        #expect(m.hovered == .item(level: 0, index: 1))
+        // Vers le haut : on revient.
+        m.scroll(deltaY: 1, precise: false)
+        #expect(m.hovered == .item(level: 0, index: 0))
+        // Défilement fin : cumulé jusqu'au cran, sans effet avant.
+        m.scroll(deltaY: -WheelModel.scrollStep / 2, precise: true)
+        #expect(m.hovered == .item(level: 0, index: 0))
+        m.scroll(deltaY: -WheelModel.scrollStep / 2, precise: true)
+        #expect(m.hovered == .item(level: 0, index: 1))
+        // Un grand geste saute plusieurs places d'un coup.
+        m.scroll(deltaY: -WheelModel.scrollStep * 2, precise: true)
+        #expect(m.hovered == .item(level: 0, index: 3))
+        // Dans un anneau ouvert, la molette parcourt l'anneau.
+        m.key(fakeKey(36)) // Entrée sur le dossier : l'anneau s'ouvre
+        m.settle()
+        #expect(m.rings.count == 1)
+        m.scroll(deltaY: -1, precise: false)
+        #expect(m.hovered == .item(level: 1, index: 0))
+        // Relâcher le clic du milieu au centre, sans l'avoir quitté, lance la place atteinte.
+        m.middleReleased(at: m.center)
+        #expect(launched == ["Mail"])
+    }
+
+    @Test func middleReleaseAtCenterWithoutChoiceDoesNothing() {
+        let m = makeModel()
+        var launched: [String] = []
+        m.onLaunch = { launched.append($0.name) }
+        m.middleReleased(at: m.center)
+        #expect(launched.isEmpty)
+        #expect(m.phase == .open)
     }
 
     private func fakeKey(_ code: UInt16) -> NSEvent {

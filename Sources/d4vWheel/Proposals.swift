@@ -20,7 +20,7 @@ struct Proposal: Codable, Identifiable, Equatable {
 
 enum Proposals {
     static var directory: URL {
-        ConfigStore.preferredURL.deletingLastPathComponent().appendingPathComponent("propositions")
+        ConfigStore.supportDirectory.appendingPathComponent("propositions")
     }
 
     /// Lettres, chiffres, `.`, `-`, `_` ; 100 caractères au plus.
@@ -77,10 +77,10 @@ enum Proposals {
 
     static let usage = """
         Usage :
-          Roue proposer --id ID --nom NOM --commande CMD [--icone ICÔNE] [--description TEXTE]
-          Roue retirer ID
-          Roue liste
-          Roue ouvrir | reglages
+          d4vWheel proposer --id ID --nom NOM --commande CMD [--icone ICÔNE] [--description TEXTE]
+          d4vWheel retirer ID
+          d4vWheel liste
+          d4vWheel ouvrir | reglages
         """
 
     /// Traite les verbes de la ligne de commande ; renvoie le code de sortie si un verbe a été reconnu.
@@ -100,8 +100,8 @@ enum Proposals {
             }
             do {
                 try save(Proposal(id: id, nom: nom, commande: commande, icone: opts["icone"], description: opts["description"]))
-                print("Proposition « \(nom) » enregistrée (\(id)). Placez-la dans Réglages > Roue.")
-                notify(title: "Nouvelle proposition pour la Roue", body: "« \(nom) » peut être placée dans Réglages.")
+                print("Proposition « \(nom) » enregistrée (\(id)). Placez-la dans Réglages > d4vWheel.")
+                notify(title: "Nouvelle proposition pour d4vWheel", body: "« \(nom) » peut être placée dans Réglages.")
                 return 0
             } catch {
                 FileHandle.standardError.write((error.localizedDescription + "\n").data(using: .utf8)!)
@@ -115,9 +115,9 @@ enum Proposals {
         case "liste":
             let (config, source) = ConfigStore.load()
             switch source {
-            case .file(let url): print("Roue (\(url.path)) :")
-            case .dock: print("Roue (favoris du Dock, aucun fichier) :")
-            case .fallback: print("Roue (sélection par défaut, aucun fichier) :")
+            case .file(let url): print("d4vWheel (\(url.path)) :")
+            case .dock: print("d4vWheel (favoris du Dock, aucun fichier) :")
+            case .fallback: print("d4vWheel (sélection par défaut, aucun fichier) :")
             }
             func dump(_ entries: [Entry], depth: Int) {
                 for (i, e) in entries.enumerated() {

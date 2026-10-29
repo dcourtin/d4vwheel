@@ -171,6 +171,7 @@ struct WheelPainter {
             }
         case .folder:
             drawFolderTile(&ctx, place, in: rect)
+            drawCaption(&ctx, place.name, below: rect)
         case .empty:
             ctx.draw(Text("+").font(.system(size: 22, weight: .light)).foregroundColor(tertiary),
                      at: CGPoint(x: rect.midX, y: rect.midY))
@@ -204,6 +205,26 @@ struct WheelPainter {
             ctx.draw(Text("+").font(.system(size: 22, weight: .light)).foregroundColor(accent),
                      at: CGPoint(x: rect.midX, y: rect.midY))
         }
+    }
+
+    /// Le nom d'un dossier, en petit sous sa tuile, sur une pilule discrète (lisible sur le flou).
+    private func drawCaption(_ ctx: inout GraphicsContext, _ name: String, below rect: CGRect) {
+        let font = Font.system(size: Geometry.captionFontSize, weight: .semibold)
+        func resolved(_ text: String) -> GraphicsContext.ResolvedText {
+            ctx.resolve(Text(text).font(font).foregroundColor(labelColor.opacity(0.9)))
+        }
+        var text = name
+        var r = resolved(text)
+        var w = r.measure(in: CGSize(width: 1000, height: Geometry.captionHeight)).width
+        while w > Geometry.captionMaxWidth, text.count > 1 {
+            text = String(text.dropLast(text.hasSuffix("…") ? 2 : 1)) + "…"
+            r = resolved(text)
+            w = r.measure(in: CGSize(width: 1000, height: Geometry.captionHeight)).width
+        }
+        let h = Geometry.captionHeight
+        let pill = CGRect(x: snap(rect.midX - w / 2 - 5), y: snap(rect.maxY + Geometry.captionGap), width: w.rounded(.up) + 10, height: h)
+        ctx.fill(Path(roundedRect: pill, cornerRadius: h / 2), with: .color(panel.opacity(0.78)))
+        ctx.draw(r, at: CGPoint(x: pill.midX, y: pill.midY))
     }
 
     /// Appli sans icône : son initiale sur une pastille de couleur tirée de son nom.

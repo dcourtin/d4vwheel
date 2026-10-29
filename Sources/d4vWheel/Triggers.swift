@@ -3,7 +3,7 @@ import Carbon.HIToolbox
 
 /// Réglages des déclencheurs (raccourci clavier, clic du milieu), gardés dans les préférences.
 enum Triggers {
-    static let changed = Notification.Name("fr.odysseus.roue.declencheurs")
+    static let changed = Notification.Name("fr.d4v.wheel.declencheurs")
 
     private static let keyCodeKey = "raccourciCode"
     private static let modifiersKey = "raccourciModificateurs"

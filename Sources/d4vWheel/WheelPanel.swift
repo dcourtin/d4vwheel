@@ -127,6 +127,13 @@ final class WheelHostView: NSView {
     override func otherMouseUp(with event: NSEvent) { model.middleReleased(at: local(event)) }
     override func rightMouseDown(with event: NSEvent) { model.close() }
 
+    /// La molette parcourt les places sans bouger la souris ; l'inertie du trackpad est ignorée.
+    override func scrollWheel(with event: NSEvent) {
+        guard event.momentumPhase.isEmpty else { return }
+        let dy = event.scrollingDeltaY != 0 ? event.scrollingDeltaY : event.scrollingDeltaX
+        model.scroll(deltaY: dy, precise: event.hasPreciseScrollingDeltas)
+    }
+
     // MARK: Clavier
 
     override func keyDown(with event: NSEvent) { model.key(event) }

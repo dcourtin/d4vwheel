@@ -99,7 +99,7 @@ enum AppCatalog {
     }
 }
 
-/// État de la fenêtre Réglages > Roue. Chaque changement est enregistré aussitôt.
+/// État de la fenêtre Réglages > d4vWheel. Chaque changement est enregistré aussitôt.
 @MainActor
 final class SettingsModel: ObservableObject {
     @Published private(set) var config: WheelConfig
@@ -289,7 +289,7 @@ final class SettingsModel: ObservableObject {
     private func save() {
         let url = ConfigStore.fileURL
         try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
-        do { try config.serialize().write(to: url, atomically: true, encoding: .utf8) } catch { NSLog("Roue : enregistrement impossible : \(error)") }
+        do { try config.serialize().write(to: url, atomically: true, encoding: .utf8) } catch { NSLog("d4vWheel : enregistrement impossible : \(error)") }
     }
 
     /// Met l'élément à la place choisie (en le retirant d'ailleurs), puis passe à la suivante libre.
@@ -431,7 +431,7 @@ enum LoginItem {
     static func set(_ on: Bool) -> String? {
         guard #available(macOS 13, *) else { return "macOS 13 requis." }
         guard Bundle.main.bundleURL.pathExtension == "app" else {
-            return on ? "Disponible seulement depuis Roue.app (pas en swift run)." : nil
+            return on ? "Disponible seulement depuis d4vWheel.app (pas en swift run)." : nil
         }
         do {
             if on { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }

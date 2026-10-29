@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// La fenêtre Réglages > Roue. Une seule, rouverte à la demande.
+/// La fenêtre Réglages > d4vWheel. Une seule, rouverte à la demande.
 @MainActor
 final class SettingsWindowController: NSObject, NSWindowDelegate {
     let model = SettingsModel()
@@ -15,7 +15,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         if let place { model.open(path: path, place: place) }
         if window == nil {
             let w = NSWindow(contentViewController: NSHostingController(rootView: SettingsView(model: model)))
-            w.title = "Réglages de la Roue"
+            w.title = "Réglages de d4vWheel"
             w.styleMask = [.titled, .closable, .miniaturizable, .resizable]
             w.setContentSize(NSSize(width: 820, height: 680))
             w.center()

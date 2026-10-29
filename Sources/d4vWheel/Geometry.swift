@@ -19,6 +19,11 @@ enum Geometry {
     static let folderCorner: CGFloat = 12
     static let miniIcon: CGFloat = 15
     static let miniGap: CGFloat = 3
+    /// Légende du nom sous une tuile de dossier.
+    static let captionFontSize: CGFloat = 10
+    static let captionMaxWidth: CGFloat = 84
+    static let captionHeight: CGFloat = 15
+    static let captionGap: CGFloat = 4
     static let labelFontSize: CGFloat = 13.5
     static let labelMaxWidth: CGFloat = 360
     static let labelHeight: CGFloat = 26

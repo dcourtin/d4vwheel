@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Roue : lanceur circulaire autour du pointeur. Appli de barre des menus, sans Dock.
+/// d4vWheel : lanceur circulaire autour du pointeur. Appli de barre des menus, sans Dock.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var controller: WheelController!
@@ -60,7 +60,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func configureTriggers() {
         hotKey = nil
         hotKey = GlobalHotKey(spec: Triggers.hotKey) { [weak self] in self?.controller.toggle() }
-        if hotKey == nil { NSLog("Roue : impossible d'enregistrer le raccourci \(Triggers.hotKey.display)") }
+        if hotKey == nil { NSLog("d4vWheel : impossible d'enregistrer le raccourci \(Triggers.hotKey.display)") }
 
         tap.onDesktop = Triggers.middleClickOnDesktop
         tap.modifier = Triggers.middleClickModifier
@@ -73,7 +73,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         tap.onDrag = { [weak self] p in self?.controller.gestureDragged(toGlobal: p) }
         tap.onRelease = { [weak self] p in self?.controller.gestureReleased(atGlobal: p) }
         if Triggers.middleClickWanted, MiddleClickTap.isTrusted {
-            if !tap.start() { NSLog("Roue : impossible d'écouter la souris") }
+            if !tap.start() { NSLog("d4vWheel : impossible d'écouter la souris") }
         } else {
             tap.stop()
         }
@@ -83,7 +83,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func installStatusItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        item.button?.image = NSImage(systemSymbolName: "circle.hexagongrid", accessibilityDescription: "Roue")
+        item.button?.image = NSImage(systemSymbolName: "circle.hexagongrid", accessibilityDescription: "d4vWheel")
         let menu = NSMenu()
         menu.delegate = self
         item.menu = menu
@@ -107,8 +107,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             add("Autoriser le clic du milieu (Accessibilité)…", #selector(requestAccessibility))
             menu.addItem(.separator())
         }
-        add("À propos de Roue", #selector(about))
-        add("Quitter Roue", #selector(NSApplication.terminate(_:)), key: "q")
+        add("À propos de d4vWheel", #selector(about))
+        add("Quitter d4vWheel", #selector(NSApplication.terminate(_:)), key: "q")
     }
 
     @objc private func openWheel() {
@@ -148,12 +148,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         signalSource = source
     }
 
-    // MARK: Schéma d'URL roue://
+    // MARK: Schéma d'URL d4vwheel://
 
-    /// `roue://ouvrir`, `roue://reglages`, `roue://proposer?id=…&nom=…&commande=…[&icone=…&description=…]`, `roue://retirer?id=…`
+    /// `d4vwheel://ouvrir`, `d4vwheel://reglages`, `d4vwheel://proposer?id=…&nom=…&commande=…[&icone=…&description=…]`, `d4vwheel://retirer?id=…`
     @objc private func handleURL(_ event: NSAppleEventDescriptor, _ reply: NSAppleEventDescriptor) {
         guard let s = event.paramDescriptor(forKeyword: AEKeyword(keyDirectObject))?.stringValue,
-              let url = URL(string: s), url.scheme == "roue" else { return }
+              let url = URL(string: s), url.scheme == "d4vwheel" else { return }
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         func q(_ name: String) -> String? { items.first { $0.name == name }?.value }
         switch url.host {
@@ -176,7 +176,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func confirmProposal(_ p: Proposal) {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
-        alert.messageText = "Nouvelle proposition pour la Roue"
+        alert.messageText = "Nouvelle proposition pour d4vWheel"
         alert.informativeText = "« \(p.nom) » (\(p.id)) propose la commande :\n\(p.commande)"
             + (p.description.map { "\n\n\($0)" } ?? "")
             + "\n\nElle n'entre pas dans la roue toute seule : vous pourrez la placer dans Réglages."
@@ -223,7 +223,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         renderer.scale = 2
         guard let image = renderer.nsImage, let tiff = image.tiffRepresentation,
               let rep = NSBitmapImageRep(data: tiff), let png = rep.representation(using: .png, properties: [:]) else {
-            NSLog("Roue : rendu impossible")
+            NSLog("d4vWheel : rendu impossible")
             return
         }
         try? png.write(to: url)
@@ -239,7 +239,7 @@ extension AppDelegate: NSMenuDelegate {
 if let code = Proposals.handleCommandLine(CommandLine.arguments) { exit(code) }
 if CommandLine.arguments.count > 1, ["ouvrir", "reglages"].contains(CommandLine.arguments[1]) {
     // Relayé à l'instance qui tourne, par le schéma d'URL.
-    NSWorkspace.shared.open(URL(string: "roue://\(CommandLine.arguments[1])")!)
+    NSWorkspace.shared.open(URL(string: "d4vwheel://\(CommandLine.arguments[1])")!)
     exit(0)
 }
 

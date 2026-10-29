@@ -28,7 +28,7 @@ final class GlobalHotKey {
             return noErr
         }, 1, &spec, selfPtr, &handlerRef)
         guard installed == noErr else { return nil }
-        let id = EventHotKeyID(signature: 0x524F5545 /* 'ROUE' */, id: 1)
+        let id = EventHotKeyID(signature: 0x44345657 /* 'D4VW' */, id: 1)
         let registered = RegisterEventHotKey(keyCode, modifiers, id, GetApplicationEventTarget(), 0, &hotKeyRef)
         guard registered == noErr else {
             if let handlerRef { RemoveEventHandler(handlerRef) }
